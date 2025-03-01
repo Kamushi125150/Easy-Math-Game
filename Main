@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matematik Oyunu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        #oyunAlani {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Matematik Oyunu</h1>
+    <button onclick="oyunuBaslat()">Oyna</button>
+
+    <div id="oyunAlani">
+        <p id="soru"></p>
+        <input type="number" id="cevap" placeholder="Cevabı yaz">
+        <button onclick="cevabiKontrolEt()">Gönder</button>
+        <p id="durum"></p>
+        <p>Puan: <span id="puan">0</span></p>
+    </div>
+
+    <script>
+        let puan = 0;
+        let dogruCevap = 0;
+
+        function rastgeleSayi(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function yeniSoru() {
+            let sayi1 = rastgeleSayi(10, 100);
+            let sayi2 = rastgeleSayi(10, 100);
+            dogruCevap = sayi1 + sayi2;
+            document.getElementById("soru").innerText = `${sayi1} + ${sayi2} = ?`;
+        }
+
+        function oyunuBaslat() {
+            document.querySelector("button").style.display = "none";
+            document.getElementById("oyunAlani").style.display = "block";
+            puan = 0;
+            document.getElementById("puan").innerText = puan;
+            yeniSoru();
+        }
+
+        function cevabiKontrolEt() {
+            let kullaniciCevabi = parseInt(document.getElementById("cevap").value);
+            if (kullaniciCevabi === dogruCevap) {
+                puan++;
+                document.getElementById("durum").innerText = "Doğru!";
+            } else {
+                if (puan === 0) {
+                    document.getElementById("durum").innerText = "Kaybettiniz..."
+                    return
+                }
+                puan--;
+                document.getElementById("durum").innerText = "Yanlış!";
+            }
+            document.getElementById("puan").innerText = puan;
+
+            if (puan >= 10) {
+                alert("Tebrikler! Kazandın!");
+                location.reload();
+            } else {
+                yeniSoru();
+            }
+            document.getElementById("cevap").value = "";
+        }
+    </script>
+</body>
+</html>
